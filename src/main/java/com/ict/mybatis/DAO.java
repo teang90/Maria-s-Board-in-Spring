@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.SystemPropertyUtils;
 
+import com.ict.service.Page;
+
 @Repository("dao")
 public class DAO {
 	
@@ -32,12 +34,8 @@ public class DAO {
 	}
 	
 	// 게시글 목록 불러오기
-	public List<Board> getBoard_list(int begin, int end, String board_category) {
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("begin", String.valueOf(begin));
-		map.put("end", String.valueOf(end));
-		map.put("board_category", board_category);
-		return template.selectList("board_list", map);
+	public List<Board> getBoard_list(Page pg) {
+		return template.selectList("board_list", pg);
 	}
 	
 	// 게시글 상세보기(기본키로 게시글 객체 반환)

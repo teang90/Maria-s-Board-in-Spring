@@ -4,7 +4,7 @@ public class Board_recommendation {
 	
 	private String board_id, board_pk, member_id ;
 	
-	private int recommendation_pk, recommendation_standard, board_recommendation;
+	private int recommendation_pk, recommendation_standard;
 
 	public String getBoard_id() {
 		return board_id;
@@ -46,13 +46,6 @@ public class Board_recommendation {
 		this.recommendation_standard = recommendation_standard;
 	}
 
-	public int getBoard_recommendation() {
-		return board_recommendation;
-	}
-
-	public void setBoard_recommendation(int board_recommendation) {
-		this.board_recommendation = board_recommendation;
-	}
 
 	
 }

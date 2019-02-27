@@ -118,36 +118,27 @@ public class AjaxController {
 	@Transactional
 	public Board_recommendation boardRecommendUp(
 			@RequestParam("recommendation_standard") String recommendation_standard,
-			@RequestParam("board_recommendation") String board_recommendation,
 			@RequestParam("board_pk") String board_pk,
 			@RequestParam("member_id") String member_id,
 			HttpServletRequest request
 			){
 		Board_recommendation board_rec = dao.getReturnBoard_recommend(board_pk, member_id);
 		Board board = dao.getOneboard(board_pk);
-	
+
 		if (board_rec == null) { // b_recommend가 null이면 생성, 아니면 + 1
-
 			Board_recommendation b_recommend = new Board_recommendation();
-
 			b_recommend.setBoard_id(board.getBoard_id());
 			b_recommend.setBoard_pk(board_pk);
 			b_recommend.setMember_id(member_id);
-			b_recommend.setBoard_recommendation(Integer.parseInt(board_recommendation));
-			
 			b_recommend.setRecommendation_standard(Integer.parseInt(recommendation_standard));
 
 			dao.getInsertBoard_recommend(b_recommend); //추천 객체에 생성
 			dao.getBoardRecommendUp(board, Integer.parseInt(recommendation_standard), member_id); // 게시글의 추천 수 업
-
 		}else {
-
 			dao.getBoardRecommendUp(board, Integer.parseInt(recommendation_standard), member_id); // 게시글의 추천 수 변경
 			/*	보드 레커맨드 클래스를 수정할 떄 맴버 값이 같이 안들어가서 에이작스 컨트롤러에서 DAO로 보낼 떄 같이 보내야함*/
 		}
-		
 		return board_rec;
-			
 	}
 	
 	
@@ -221,7 +212,6 @@ public class AjaxController {
 			@RequestParam("member_id") String member_id,
 			@RequestParam("answer_pk") String answer_pk
 			){
-		
 		Answer_recommendation answer_rec = dao.getReturnAnswer_recommendation_standard(member_id, answer_pk);
 		if (answer_rec == null) {
 			// 추천 이력 없는 애들은 추천 객체 만들어야함
@@ -280,7 +270,7 @@ public class AjaxController {
 		JSONObject Jobj = null;
 		
 		try {
-			redirectURI = URLEncoder.encode("http://localhost:8090/", "UTF-8");
+			redirectURI = URLEncoder.encode("http://localhost:8081/", "UTF-8");
 			apiURL = "https://nid.naver.com/oauth2.0/token?grant_type=delete&";
 			apiURL += "client_id=" + clientId;
 			apiURL += "&client_secret=" + clientSecret;

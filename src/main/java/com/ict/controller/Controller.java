@@ -90,6 +90,7 @@ public class Controller {
 	public ModelAndView movetoBoard(String cPage) {
 		
 		pg.setTotalRecord(dao.getCountRecord("free"));
+		pg.setCategory("free"); // 카테고리 지정(항목별 페이징 처리)
 		pg.setNumPerPage(10); // 페이지당 담을 게시물 수
 		pg.setPagePerBlock(3); // 블럭당 페이지 수 
 		pg.setTotalPage(pg.getTotalRecord() / pg.getNumPerPage());
@@ -122,9 +123,9 @@ public class Controller {
 			pg.setEndPage(pg.getTotalPage());
 		}
 		
+		pg.setBegin((pg.getcPage()-1)*pg.getNumPerPage());
 		List<Board> board_list = 
-				dao.getBoard_list((pg.getcPage()-1)*pg.getNumPerPage()+1,
-						pg.getcPage()*pg.getNumPerPage(), "free");
+						dao.getBoard_list(pg);
 		
 		List<List<Answer>> boardAnswer_list = new ArrayList<List<Answer>>();
 		for (Board board : board_list) {

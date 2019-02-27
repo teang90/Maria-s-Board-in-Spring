@@ -6,40 +6,40 @@
 
 	<!--                      insert                      -->
 	<!-- 회원가입 -->
-	<insert id="member_add" parameterType="com.ict.mybatis.Member">
+	<insert id="member_add" parameterType="com.ict.mybatis.Member" useGeneratedKeys="true" keyProperty="member_pk">
 		<if test="member_pwd != null">
-			insert into member values(member_seq.nextval,#{member_id},#{member_pwd},#{member_name},#{member_email},0,0,sysdate)
+			insert into member values(#{member_pk},#{member_id},#{member_pwd},#{member_name},#{member_email},0,0,now())
 		</if>
 		<if test="member_pwd == null">
-			insert into member values(#{member_pk},#{member_id},#{member_pk},#{member_name},#{member_email},0,0,sysdate)
+			insert into member values(#{member_pk},#{member_id},#{member_pk},#{member_name},#{member_email},0,0,now())
 		</if>
 	</insert>
 	
 	<!-- 게시글 작성하기 -->
-	<insert id="board_insert" parameterType="com.ict.mybatis.Board">
-		insert into board values(board_seq.nextval,#{board_category},#{board_id},#{board_title},#{board_content},0,0,sysdate)
+	<insert id="board_insert" parameterType="com.ict.mybatis.Board" useGeneratedKeys="true" keyProperty="board_pk">
+		insert into board values(#{board_pk},#{board_category},#{board_id},#{board_title},#{board_content},0,0,now())
 	</insert>
 	
 	<!-- 게시글에 답글달기 -->
-	<insert id="answer_insert" parameterType="com.ict.mybatis.Answer">
-		insert into answer values(answer_seq.nextval,#{answer_id},#{answer_content},answer_seq.nextval,0,0,sysdate,#{answer_bd_pk})
+	<insert id="answer_insert" parameterType="com.ict.mybatis.Answer" useGeneratedKeys="true" keyProperty="answer_pk">
+		insert into answer values(#{answer_pk},#{answer_id},#{answer_content},#{answer_pk},0,0,now(),#{answer_bd_pk})
 	</insert>
 	
 	<!-- 게시글의 답글에 답글 달기 -->
-	<insert id="answer_insert_insert" parameterType="com.ict.mybatis.Answer">
-		insert into answer values(answer_seq.nextval,#{answer_id},#{answer_content},#{answer_group},#{answer_lev}+1,0,sysdate,#{answer_bd_pk})
+	<insert id="answer_insert_insert" parameterType="com.ict.mybatis.Answer" useGeneratedKeys="true" keyProperty="answer_pk">
+		insert into answer values(#{answer_pk},#{answer_id},#{answer_content},#{answer_group},#{answer_lev}+1,0,now(),#{answer_bd_pk})
 	</insert>
 	
 	<!-- 게시글 추천 이력 객체 -->
-	<insert id="InsertboardRec" parameterType="com.ict.mybatis.Board_recommendation">
-		insert into board_recommendation values(board_recommendation_seq.nextval,#{board_id},#{board_pk},#{member_id},#{recommendation_standard},#{board_recommendation})
+	<insert id="InsertboardRec" parameterType="com.ict.mybatis.Board_recommendation" useGeneratedKeys="true" keyProperty="recommendation_pk">
+		insert into board_recommendation values(#{recommendation_pk},#{board_id},#{board_pk},#{member_id},#{recommendation_standard})
 	</insert>
 	
 	<!-- 게시글 답글의 추천 이력 객체 -->
-	<insert id="answer_recObj" parameterType="com.ict.mybatis.Answer_recommendation">
-		insert into answer_recommendation values(answer_recommendation_seq.nextval,#{board_pk},#{answer_pk},#{member_id},#{recommendation_standard})
+	<insert id="answer_recObj" parameterType="com.ict.mybatis.Answer_recommendation" useGeneratedKeys="true" keyProperty="answer_rec_pk">
+		insert into answer_recommendation values(#{answer_rec_pk},#{board_pk},#{answer_pk},#{member_id},#{recommendation_standard})
 	</insert>
-	
+
 	
 	
 	<!--                      update                      -->
@@ -76,7 +76,7 @@
 		update board set board_recommendation = #{board_recommendation}-1 where board_pk = #{board_pk} 
 	</update>
 	<update id="Recommendation_standard_modify">
-		update board_recommendation set recommendation_standard=#{recommendation_standard}, board_recommendation=#{board_recommendation} where board_pk=#{board_pk} and member_id=#{member_id}
+		update board_recommendation set recommendation_standard=#{recommendation_standard} where board_pk=#{board_pk} and member_id=#{member_id}
 	</update>
 	
 	<!-- 게시글의 답글 추천 및 반대 -->
@@ -114,14 +114,8 @@
 	</select>
 	
 	<!-- 페이징기법 적용된 카테고리별 리스트 출력 -->
-	<select id="board_list" parameterType="Map" resultType="com.ict.mybatis.Board">
-		select * 
-		from (select rownum r_num, a.* from
-				(select * from board 
-				where board_category = #{board_category}
-				order by board_date desc)
-			  a)
-		where r_num between #{begin} and #{end} 
+	<select id="board_list" parameterType="com.ict.service.Page" resultType="com.ict.mybatis.Board">
+		select * from board where board_category = #{category} order by board_date desc limit #{begin}, #{numPerPage}
 	</select>
 	
 	<!-- 게시글 상세보기 -->
@@ -158,18 +152,18 @@
 	<select id="SearchForBoard" resultType="com.ict.mybatis.Board" parameterType="Map">
 		select * from board
 			<if test="legend == 'all'">
-				where board_id like '%'||#{keyword}||'%'
-				or board_content like '%'||#{keyword}||'%'
-				or board_title like '%'||#{keyword}||'%'
+				where board_id like concat('%',#{keyword},'%')
+				or board_content like concat('%',#{keyword},'%')
+				or board_title like concat('%',#{keyword},'%')
 			</if> 
 			<if test="legend == 'writer'">
-				where board_id like '%'||#{keyword}||'%'
+				where board_id like concat('%',#{keyword},'%')
 			</if>
 			<if test="legend == 'content'">
-				where board_content like '%'||#{keyword}||'%'
+				where board_content like concat('%',#{keyword},'%')
 			</if>
 			<if test="legend == 'title'">
-				where board_title like '%'||#{keyword}||'%'
+				where board_title like concat('%',#{keyword},'%')
 			</if>
 			order by board_date desc
 	</select>

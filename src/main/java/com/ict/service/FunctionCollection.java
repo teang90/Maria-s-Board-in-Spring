@@ -123,7 +123,7 @@ public class FunctionCollection {
 		    
 		    String apiURL;
 		    try {
-		    redirectURI = URLEncoder.encode("http://localhost:8090/", "UTF-8");
+		    redirectURI = URLEncoder.encode("http://localhost:8081/", "UTF-8");
 		    apiURL = "https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&";
 		    apiURL += "client_id=" + clientId;
 		    apiURL += "&client_secret=" + clientSecret;

@@ -11,7 +11,6 @@ public class Board {
 	public void setBoard_category(String board_category) {
 		this.board_category = board_category;
 	}
-	
 	public String getBoard_id() {
 		return board_id;
 	}

@@ -92,7 +92,6 @@ form {
 	// 왜 댓글 작성한 이후 최초의 추천 혹은 반대를 클리하면 success로 떨어지지 않고 error로 떨어질까?
 	// 그리고 DAO랑 mapper에서 answer_recommendation 객체의 recommendation_standard 수정하기 안만들었음...
 	function recommendationUp(oneanswer) {
-		
 		var answer_pk = oneanswer.answer_pk.value;
 		var recommendation_standard = 1 ;
 		if ('${member_id}' == null || '${member_id}'=="" ) {
@@ -105,6 +104,7 @@ form {
 		}
 		recommendationUpNDown_ajax(recommendation_standard, answer_pk);
 	}
+	
 	
 	function recommendationDown(oneanswer) {
 		var answer_pk = oneanswer.answer_pk.value;
@@ -119,6 +119,7 @@ form {
 		}
 		recommendationUpNDown_ajax(recommendation_standard, answer_pk);
 	}
+	
 	
 	function recommendationUpNDown_ajax(recommendation_standard, answer_pk) {
 		console.log("recommendation_standard = "+recommendation_standard+" / answer_pk = "+answer_pk);
@@ -135,14 +136,16 @@ form {
 			async: false,  // 성공으로 안와서 동기식으로...
 			type: "post",
 			success: function(data) { //왜 성공으로 안오지?
-				alert();
+					goback();
 				// $(".answer_recommend")[index-2].text(data["answer_recommendation"]);
 				// $(".answer_recommend")[index-2].text(data);
 			},
 			error: function(request, status, error) {
+				goback();
 			}
 		});
 	}
+	
 	
 	//댓글 달기
 	function addOneAnswer(oneanswer) {
@@ -329,6 +332,8 @@ form {
 		
 	});
 	
+	
+	
 	//본글 삭제
 	function deleteBoard(f) {
 		var check_confirm = confirm("본 게시글을 삭제하시겠습니까?");
@@ -338,7 +343,6 @@ form {
 		}
 		return ;
 	}
-	
 	
 	function notiAlert() {
 		alert("작성자만 가능합니다.");
@@ -388,16 +392,16 @@ form {
 				url: "BoardRecommendationUpDown.do",
 				data: {
 					"recommendation_standard" : 1,
-					"board_recommendation" : '${board.board_recommendation}',
 					"board_pk" : '${board.board_pk}',
 					"member_id" : '${member_id}'
 				},
 				type: "post",
 				dataType: "json",
-				async: false,
+				//async: false,
 				success: function(data){
 					alert("해당 글을 추천하셨습니다.");
-					$("#innerShape").text(data["board_recommendation"]);
+					goback();
+					//$("#innerShape").text(data["board_recommendation"]);
 				},
 				error: function() {
 					goback();
@@ -423,14 +427,14 @@ form {
 				url: "BoardRecommendationUpDown.do",
 				data: {
 					"recommendation_standard" : -1,
-					"board_recommendation" : '${board.board_recommendation}',
 					"board_pk" : '${board.board_pk}',
 					"member_id" : '${member_id}'
 				},
 				type: "post",
 				dataType: "json",
-				async: false,
+				//async: false,
 				success: function(data) { //성공으로 안옴...
+					goback();
 					$("#innerShape").text(data["board_recommendation"]);
 					alert("해당 글을 반대하셨습니다.");
 				},
@@ -473,8 +477,8 @@ form {
 		<hr>
 
 		<div class="form-group row container">
-			<c:if test="${board.board_id == member_id}">
 				<input type="button" class="btn btn-outline-secondary" value="목록" onclick="moveBoard(this.form)"> &nbsp;&nbsp;&nbsp;
+			<c:if test="${board.board_id == member_id}">
 				<input type="submit" class="btn btn-success" value="수정" > &nbsp;&nbsp;&nbsp;
 				<input type="button" class="btn btn-danger" value="삭제" onclick="deleteBoard(this.form)">&nbsp;&nbsp;&nbsp;
 				<input type="button" class="btn btn-outline-primary" value="추천" onclick="boardRecommendUp(this.form)">   &nbsp;&nbsp;&nbsp;
@@ -484,17 +488,14 @@ form {
 				<input type="hidden" name="member_id" value="${member_id}" id="member_id">
 			</c:if>
 			<c:if test="${board.board_id != member_id && !empty member_id}">
-				<input type="button" class="btn btn-outline-secondary" value="목록" onclick="moveBoard(this.form)"> &nbsp;&nbsp;&nbsp;
 				<input type="button" class="btn btn-success" value="수정" onclick="notiAlert()"> &nbsp;&nbsp;&nbsp;
 				<input type="button" class="btn btn-danger" value="삭제" onclick="notiAlert()" > &nbsp;&nbsp;&nbsp;
 				<input type="button" class="btn btn-outline-primary" value="추천" onclick="boardRecommendUp(this.form)">  &nbsp;&nbsp;&nbsp;
 				<input type="button" class="btn btn-outline-danger" value="반대" onclick="boardRecommendDown(this.form)">&nbsp;&nbsp;&nbsp; 
-			
 				<input type="hidden" name="board_pk" value="${board.board_pk}">
 				<input type="hidden" name="member_id" value="${member_id}">
 			</c:if>
 			<c:if test="${empty member_id}">
-				<input type="button" class="btn btn-outline-secondary" value="목록" onclick="moveBoard(this.form)"> &nbsp;&nbsp;&nbsp;
 				<input type="button" class="btn btn-primary" value="수정" onclick="mustLogin()"> 
 				<input type="button" class="btn btn-primary" value="삭제" onclick="mustLogin()">
 			</c:if>
