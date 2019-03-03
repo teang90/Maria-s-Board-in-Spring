@@ -35,6 +35,7 @@ import com.ict.mybatis.Board;
 import com.ict.mybatis.Board_recommendation;
 import com.ict.mybatis.DAO;
 import com.ict.service.FunctionCollection;
+import com.ict.service.Page;
 import com.ict.mybatis.Member;
 
 //@RequestMapping("/ajax") 
@@ -42,6 +43,9 @@ import com.ict.mybatis.Member;
 public class AjaxController {
 	@Autowired
 	DAO dao;
+	
+	@Autowired
+	Page pg;
 	
 	@Autowired
 	FunctionCollection funcCollection ;
@@ -69,15 +73,44 @@ public class AjaxController {
 	}
 	
 	//검색기능
-	@ResponseBody
+	/*@ResponseBody
 	@RequestMapping(value="searchKeyword.do", method=RequestMethod.POST)
-	public List<Board> search(
+	public ModelAndView search(
 			@RequestParam("board_keyword") String keyword,
-			@RequestParam("board_legend") String legend
+			@RequestParam("board_legend") String legend,
+			@RequestParam("cPage") String cPage			
 			) {
+		ModelAndView mv = new ModelAndView();
+
 		List<Board> b_list = dao.getBoardSearch(keyword, legend);
-		return b_list ;
-	}
+		
+		// pg.setTotalRecord(dao.getCountRecord("free"));
+		pg.setCategory("free"); // 카테고리 지정(항목별 페이징 처리)
+		pg.setNumPerPage(10); // 페이지당 담을 게시물 수
+		pg.setPagePerBlock(3); // 블럭당 페이지 수 
+		pg.setTotalPage(b_list.size()/pg.getNumPerPage());
+		
+		if (cPage == null) {
+			pg.setcPage(1);
+		}else {
+			pg.setcPage(Integer.parseInt(cPage));
+		}
+		
+		pg.setBeginPage(((pg.getcPage()-1)/pg.getPagePerBlock())*pg.getPagePerBlock() + 1);
+		pg.setEndPage(pg.getBeginPage()+pg.getPagePerBlock() - 1);
+		if (pg.getEndPage() > pg.getTotalPage()) {
+			pg.setEndPage(pg.getTotalPage());
+		}
+
+		pg.setBegin((pg.getcPage()-1)*pg.getNumPerPage());
+		List<Board> board_list = dao.getBoard_list(pg);
+		
+		mv.setViewName("free");
+		mv.addObject("b_list", b_list);
+		mv.addObject("pg", pg);
+		
+		return mv ;
+	}*/
 
 	/* 기상정보 가져오기
 	@ResponseBody
@@ -140,7 +173,6 @@ public class AjaxController {
 		}
 		return board_rec;
 	}
-	
 	
 	@RequestMapping(value="returnBoardRecommendation.do", method=RequestMethod.POST)
 	@ResponseBody

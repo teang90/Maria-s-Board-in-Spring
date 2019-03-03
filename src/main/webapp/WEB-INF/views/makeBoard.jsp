@@ -34,7 +34,6 @@ form{
 
 $(function() {
 
-	
 	var editor_object = [];
 	
 	nhn.husky.EZCreator.createInIFrame({
@@ -81,7 +80,7 @@ $(function() {
 	
 	<hr>
 	
-<form action="write.do" method="post" id="frm" class="container">
+<form action="write.do" method="post" id="frm" class="container" >
 	
 	<div class="form-group row">
 	<label for="colFormLabel" class=" col-form-label">게시판 종류</label>
@@ -90,19 +89,11 @@ $(function() {
 	</select>
 	</div>
 	
-	<!-- <input type="hidden" name="board_subcategory" value=""> -->
-	
-<%-- 	서브 카테고리
-	<select name="board_subcategory">	
-		<option value="default" >준비중입니다.</option>
-	</select> --%>
-	
 	<div class="form-group row">
 		<label for="colFormLabel" class=" col-form-label">글쓴이</label>
 		<input type="text" class="form-control" value="${member_id}" disabled>
 		<input type="hidden" name="board_id" value="${member_id}">
 	</div>
-	
 
 	<div class="form-group row">
 		<label for="colFormLabel" class=" col-form-label">글 제목</label>
@@ -114,11 +105,11 @@ $(function() {
 		<textarea name="board_content" id="smartEditor" rows="10" cols="100" style="width:800px; height:500px;"></textarea>
 	</div>
 	
-	<!-- 
-	<div class="form-group row">
+<!-- 	<div class="form-group row">
 		<label for="colFormLabel" class="col-form-label">파일첨부</label>
 		<input type="file" class="form-control" name="board_file" style="width: 700px" >		
-	</div>	 -->
+	</div> -->
+
 	
 	<div style="text-align: center; margin-top: 50px; ">
 		<input type="submit" class="btn btn-primary" id="savebutton" value="완료" style="width: 200px;">

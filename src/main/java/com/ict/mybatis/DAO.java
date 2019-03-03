@@ -200,8 +200,15 @@ public class DAO {
 		return template.delete("delete_answer", answer_pk);
 	}
 
-
-	
+	public List<Board> getSearchList(Page pg, String keyword, String legend) {
+		Map<String, String> map = new HashMap<String, String>();
+		System.out.println("pg.Begin = "+pg.getBegin());
+		map.put("begin", String.valueOf(pg.getBegin()));
+		//map.put("category", pg.getCategory());
+		map.put("keyword", keyword);
+		map.put("legend", legend);
+		return template.selectList("searchList", map);
+	}
 	
 	
 	

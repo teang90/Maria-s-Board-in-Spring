@@ -79,11 +79,15 @@ table{
 			alert("검색어를 입력해주십시오");
 			return ;
 		}
-		$.ajax({
+		
+		
+		
+		/* $.ajax({
 			url: "searchKeyword.do",
 			data: {
 				"board_keyword" : keyword,
-				"board_legend" : legend
+				"board_legend" : legend,
+				"cPage" : '${pg.cPage}'
 			},
 			dataType: "json",
 			type: "post",
@@ -110,9 +114,9 @@ table{
 				}
 			},
 			error: function(error) {
-				alert("실패");
+				alert("검색 실패");
 			}
-		});
+		}); */
 	}
 	
 </script>
@@ -132,18 +136,23 @@ table{
  	
 			<div class="d-flex bd-highlight mb-3">
 				<div class="mr-auto p-2 bd-highlight"><button class="btn btn-primary gap_lower" onclick="newboard()" >글쓰기</button></div>
-
-				<div class="p-2 bd-highlight">
+				
+				<form action="searchKeyword.do" method="post" class="form-group" style="display: inline;">
+				
+				<span class="p-2 bd-highlight" style="display: inline">
 				  <select class="custom-select" style="width: 130px;" name="legend">
 				  	<option value="all">글쓴이+내용+제목</option>
 				  	<option value="writer">글쓴이</option>
 				  	<option value="content">내용</option>
 				  	<option value="title">제목</option>
 				  </select>
-				</div>
+				</span>
 				
-				<div class="p-2 bd-highlight"><input type="search" name="keyword" class="form-control marginleft" style="width: 200px;"></div>
-				<div class="p-2 bd-highlight"><input type="button" value="검색" onclick="search()" class="btn btn-outline-primary marginleft"></div>
+				<span class="p-2 bd-highlight"><input type="search" name="keyword" class="form-control marginleft" style="width: 200px; display: inline "></span>
+				<span class="p-2 bd-highlight"><input type="submit" value="검색" onclick="search()" class="btn btn-outline-primary marginleft"></span>
+				<input type="hidden" name="cPage" value="${pg.cPage}">				
+				</form>
+				
 			</div>
 
 	<c:if test="${empty board_list}">

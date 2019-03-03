@@ -101,7 +101,7 @@
 
           <div class="col-lg-12 spacing">
 			
-			<p style="text-align: center; font-size: 15px; margin-bottom: 20px; "><b style="font-size: 20px;">프로젝트</b>를 만들면서 사용한 언어 및 툴 등</p>
+			<p style="text-align: center; font-size: 15px; margin-bottom: 20px; "><b style="font-size: 20px;">프로젝트</b>에 사용한 언어 및 툴</p>
             <img class="rounded-circle shadow" src="resources/external_image/PLanguage_img/Java.png" alt="java_img">
         
             <img class="rounded-circle shadow" src="resources/external_image/PLanguage_img/JS.png" alt="" >

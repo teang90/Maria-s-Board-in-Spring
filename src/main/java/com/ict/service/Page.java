@@ -28,11 +28,16 @@ public class Page {
 		this.category = category;
 	}
 	public int getcPage() {
+		if (this.totalPage < cPage) {
+			return this.totalPage;
+		}
 		return cPage;
 	}
+	
 	public void setcPage(int cPage) {
-		this.cPage = cPage;
+			this.cPage = cPage;
 	}
+	
 	public int getNumPerPage() {
 		return numPerPage;
 	}
@@ -53,10 +58,17 @@ public class Page {
 		this.totalRecord = totalRecord;
 	}
 	public int getTotalPage() {
+		if (totalPage == 0) {
+			this.totalPage = 1;
+		}
 		return totalPage;
 	}
 	public void setTotalPage(int totalPage) {
-		this.totalPage = totalPage;
+		if (totalPage % numPerPage > 0) {
+			this.totalPage = totalPage + 1;
+		}else {
+			this.totalPage = totalPage;
+		}
 	}
 	public int getBeginPage() {
 		return beginPage;

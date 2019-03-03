@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ict.mybatis.Answer;
@@ -29,6 +30,8 @@ import com.ict.mybatis.DAO;
 import com.ict.service.FunctionCollection;
 import com.ict.mybatis.Member;
 import com.ict.service.Page;
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 @org.springframework.stereotype.Controller
 public class Controller {
@@ -94,15 +97,6 @@ public class Controller {
 		pg.setNumPerPage(10); // 페이지당 담을 게시물 수
 		pg.setPagePerBlock(3); // 블럭당 페이지 수 
 		pg.setTotalPage(pg.getTotalRecord() / pg.getNumPerPage());
-		if (pg.getTotalPage() % pg.getNumPerPage() > 0) {
-			pg.setTotalPage(pg.getTotalPage() + 1);
-		}
-		
-		// 위의 과정을 거쳤음에도 불구하고 페이지가 0이라면 1페이지 부터 시작하도록 
-		// (EX : 게시물 2, numperPage 10개면 전체 페이지가 0이 되 버림)
-		if (pg.getTotalPage() == 0) {
-			pg.setTotalPage(1);
-		}
 		
 		//현재 페이지 설정 : cPage가 널이면 디폴트인 0값으로
 		if (cPage == null) {
@@ -111,22 +105,16 @@ public class Controller {
 			pg.setcPage(Integer.parseInt(cPage));
 		}
 		
-		// 현재 페이지 번호가 총 페이지 번호보다 큰 경우, 현재 페이지를 강제로 총 페이지 번호로 치환
-		if (pg.getTotalPage() < pg.getcPage()) {
-			pg.setcPage(pg.getTotalPage());
-		}
-		
-		pg.setBeginPage( ((pg.getcPage()-1)/pg.getPagePerBlock())*pg.getPagePerBlock() + 1);
+		pg.setBeginPage(((pg.getcPage()-1)/pg.getPagePerBlock())*pg.getPagePerBlock() + 1);
 		pg.setEndPage(pg.getBeginPage()+pg.getPagePerBlock() - 1);
-		
 		if (pg.getEndPage() > pg.getTotalPage()) {
 			pg.setEndPage(pg.getTotalPage());
 		}
-		
+
 		pg.setBegin((pg.getcPage()-1)*pg.getNumPerPage());
-		List<Board> board_list = 
-						dao.getBoard_list(pg);
+		List<Board> board_list = dao.getBoard_list(pg);
 		
+		// 답글 수 표시
 		List<List<Answer>> boardAnswer_list = new ArrayList<List<Answer>>();
 		for (Board board : board_list) {
 			List<Answer> answer_list = dao.getReturnAnswerList(board.getBoard_pk());
@@ -282,7 +270,6 @@ public class Controller {
 		ModelAndView mv= new ModelAndView();
 		answer.setAnswer_recommendation(0);
 		int res = dao.getMakeAnswers_answer(answer);
-		//System.out.println("cPage of 컨트롤러 = "+cPage);
 		mv.setViewName("redirect:/oneBoard.do?board_pk="+answer.getAnswer_bd_pk()+"&cPage="+cPage);
 		
 		// 추가적으로 answer의 모든 자료 받아서 엔서에 넣기 
@@ -302,6 +289,7 @@ public class Controller {
 			Board board,
 			HttpServletRequest request){
 		ModelAndView mv = new ModelAndView();
+			
 		int res = dao.getWrite(board);
 			
 		// 들어온 카테고리 정보로 분류하여 이프문으로 글 작성 후 기상, 자유, 음악 게시판으로 보내야함
@@ -334,6 +322,45 @@ public class Controller {
 			}
 	}
 	
+	// 검색 후 페이징 처리해서 게시판으로 이동
+	@RequestMapping(value="searchKeyword.do", method=RequestMethod.POST)
+	public ModelAndView search(
+			@RequestParam("keyword") String keyword,
+			@RequestParam("legend") String legend,
+			@RequestParam("cPage") String cPage			
+			) {
+		ModelAndView mv = new ModelAndView();
+		
+		List<Board> b_list = dao.getBoardSearch(keyword, legend);
+		// pg.setTotalRecord(dao.getCountRecord("free"));
+		pg.setCategory("free"); // 카테고리 지정(항목별 페이징 처리)
+		pg.setNumPerPage(10); // 페이지당 담을 게시물 수
+		pg.setPagePerBlock(3); // 블럭당 페이지 수 
+		pg.setTotalPage(b_list.size()/pg.getNumPerPage());
+
+		if (cPage == null || cPage.equals(0)) {
+			pg.setcPage(1);
+		}else {
+			pg.setcPage(Integer.parseInt(cPage));
+		}
+		
+		pg.setBeginPage(((pg.getcPage() - 1)/pg.getPagePerBlock())*pg.getPagePerBlock() + 1);
+		pg.setEndPage(pg.getBeginPage()+pg.getPagePerBlock() - 1);
+		if (pg.getEndPage() > pg.getTotalPage()) {
+			pg.setEndPage(pg.getTotalPage());
+		}
+
+		pg.setBegin((pg.getcPage()-1)*pg.getNumPerPage());
+		
+		List<Board> search_list = dao.getSearchList(pg, keyword, legend);
+		//List<Board> board_list = dao.getBoard_list(pg);
+		
+		mv.setViewName("free");
+		mv.addObject("board_list", search_list);
+		mv.addObject("pg", pg);
+		
+		return mv ;
+	}
 	
 	
 	

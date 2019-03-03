@@ -2,7 +2,7 @@ package com.ict.mybatis;
 
 public class Board {
 
-	private String board_category, board_id, board_title, board_content, board_date;
+	private String board_category, board_id, board_title, board_content, board_date ;
 	private int board_pk, board_hit, board_recommendation ; //3
 	
 	public String getBoard_category() {

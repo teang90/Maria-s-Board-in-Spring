@@ -167,6 +167,27 @@
 			</if>
 			order by board_date desc
 	</select>
+	
+	<select id="searchList" resultType="com.ict.mybatis.Board" parameterType="Map">
+		select *
+		from board
+			<if test="legend == 'all'">
+				where board_id like concat('%',#{keyword},'%')
+				or board_content like concat('%',#{keyword},'%')
+				or board_title like concat('%',#{keyword},'%')
+			</if> 
+			<if test="legend == 'writer'">
+				where board_id like concat('%',#{keyword},'%')
+			</if>
+			<if test="legend == 'content'">
+				where board_content like concat('%',#{keyword},'%')
+			</if>
+			<if test="legend == 'title'">
+				where board_title like concat('%',#{keyword},'%')
+			</if>
+			order by board_date desc
+		limit ${begin}, 10
+	</select>
 
 	<!-- 본 글 추천 객체 조회(해당 회원이 해당 글을 전에 추천했는지 검사) -->
 	<select id="findBoard_recommend" parameterType="Map" resultType="com.ict.mybatis.Board_recommendation">
@@ -185,6 +206,8 @@
 	<select id="findMemberObjWithPrimaryKey" parameterType="String" resultType="com.ict.mybatis.Member">
 		select * from member where member_pk=#{member_pk}
 	</select>
+	
+	
 	
 	
 	

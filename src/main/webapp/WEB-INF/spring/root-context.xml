@@ -8,9 +8,9 @@
 	http://www.springframework.org/schema/tx
 	http://www.springframework.org/schema/tx/spring-tx.xsd
 	http://www.springframework.org/schema/jdbc
+	http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
 	http://mybatis.org/schema/mybatis-spring 
-	http://mybatis.org/schema/mybatis-spring-1.2.xsd
-	">
+	http://mybatis.org/schema/mybatis-spring-1.2.xsd">
 	
 <!-- 	http://www.springframework.org/schema/jdbc
 	http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
@@ -38,13 +38,15 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 	
+<!-- 파일 업로드로 들어오는 데이터를 처리하는 객체 -->
+<!-- 
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="utf-8" /> 
+		<property name="maxUploadSize" value="104857600" /> 
+	</bean>
+ -->
 	<!-- @Transactional 애노테이션을 sacn하기 위한 설정 -->
 	<!-- 클래스 프록시 설정 -->
 	<tx:annotation-driven proxy-target-class="true" />
 
-
-
-
-
-	
 </beans>
