@@ -202,7 +202,6 @@ public class DAO {
 
 	public List<Board> getSearchList(Page pg, String keyword, String legend) {
 		Map<String, String> map = new HashMap<String, String>();
-		System.out.println("pg.Begin = "+pg.getBegin());
 		map.put("begin", String.valueOf(pg.getBegin()));
 		//map.put("category", pg.getCategory());
 		map.put("keyword", keyword);
