@@ -5,7 +5,7 @@
     pageEncoding="UTF-8"%>
     
 	<%
-    String clientId = "NUjBHsvxCTjUTS1ileL9";//애플리케이션 클라이언트 아이디값";
+    String clientId = "maYF23uQgYDibz3GTO8r";//애플리케이션 클라이언트 아이디값";
     String redirectURI = URLEncoder.encode("http://localhost:8081/getNaverToken.do", "UTF-8");
     SecureRandom random = new SecureRandom();
     String state = new BigInteger(130, random).toString();
@@ -106,37 +106,30 @@
 <script type="text/javascript">
 
 	// 사용할 앱의 JavaScript 키를 설정해 주세요.
-	Kakao.init('00b835d4bad0b5e92756a8aa2bfab97c');
-
-	//카카오 로그인 버튼 생성
+	Kakao.init('6ee74473af25ca7deeaafd6ece0ad5aa');
+	
 	function loginWithKakao() {
-		if (Kakao.Auth.getAccessToken() != null) {
-
-			Kakao.Auth.loginForm({
-				success: function(authObj) {
-		    		alert("api Request1");
-					kakaoApiRequest();
-					
-				},
-				fail: function(errorObj) {
-					alert("errorObj : "+JSON.stringify(errorObj));
-				}
-			});
-			
-		}else{
-			
+	 	if (Kakao.Auth.getAccessToken() != null) {
+				Kakao.Auth.loginForm({
+					success: function(authObj) {
+						kakaoApiRequest();
+					},
+					fail: function(errorObj) {
+						alert("errorObj : "+JSON.stringify(errorObj));
+					}
+				});
+	 	}else{
 			Kakao.Auth.login({
-				success: function(authObj) {
-		    		alert("api Request2");
-					kakaoApiRequest();
-				},
-				fail: function(err) {
-		    		$("#noti").text("실패 : "+JSON.stringify(err));
-				}
+					success: function(authObj) {
+			    		kakaoApiRequest();
+					},
+					fail: function(err) {
+			    		$("#noti").text("실패 : "+JSON.stringify(err));
+					}
 			});
 		}
 	}
-	
+
 	function kakaoApiRequest() {
 		Kakao.API.request({
 			url: '/v2/user/me',

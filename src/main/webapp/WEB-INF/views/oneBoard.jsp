@@ -177,7 +177,7 @@ form {
 	
 	// 새로고침
 	function goback() {
-		history.go(0);
+		location.reload(true);
 	}
 	
 	// 답글 수정 기능구현

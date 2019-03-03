@@ -260,8 +260,8 @@ public class AjaxController {
 	@RequestMapping("returnNaverAccess_token.do")
 	@ResponseBody
 	public String returnNaverAccess_token(HttpServletRequest request) {
-		String clientId = "NUjBHsvxCTjUTS1ileL9";// 애플리케이션 클라이언트 아이디값";
-		String clientSecret = "JTfj_oe28K";// 애플리케이션 클라이언트 시크릿값";
+		String clientId = "maYF23uQgYDibz3GTO8r";// 애플리케이션 클라이언트 아이디값";
+		String clientSecret = "p3PvhksH5n";// 애플리케이션 클라이언트 시크릿값";
 		String code = request.getParameter("code");
 		String state = request.getParameter("state");
 		String redirectURI;
