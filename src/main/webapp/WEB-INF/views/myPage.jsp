@@ -26,18 +26,18 @@ body {
 </style>
 <script type="text/javascript">
 
-function withdraw() {
-	if ('${member_id}' == 'visitior')  {
-		alert("visitor아이디는 탈퇴가 불가능합니다.");
-		return ;
+	function withdraw() {
+		if ('${member_id}' == 'visitior')  {
+			alert("visitor아이디는 탈퇴가 불가능합니다.");
+			return ;
+		}
+		
+		var chck_confirm= confirm("정말 탈퇴하시겠습니까?");
+		if (!chck_confirm) {
+			return ;
+		}
+		location.href="withdraw.do?member_id=${member_id}";
 	}
-	
-	var chck_confirm= confirm("정말 탈퇴하시겠습니까?");
-	if (!chck_confirm) {
-		return ;
-	}
-	location.href="withdraw.do?member_id=${member_id}";
-}
 
 </script>
 </head>
@@ -50,7 +50,7 @@ function withdraw() {
 	<hr style="color: 050505">
 	
 	<div class="container">
-	[${member_id}] 님이 작성하신 게시글
+	<b>[${member_id}] 님이 작성하신 게시글</b>
 	<div style="height:300px ; overflow: auto;">
 	<table class="table table-sm table-hover">
 	<thead> 
@@ -88,14 +88,15 @@ function withdraw() {
 	
 	
 	<div class="container">
-	<div> [${member_id}]님이 작성하신 댓글 </div>
+	<div> <b>[${member_id}]님이 작성하신 댓글</b> </div>
 	<div style="height: 300px; overflow: auto;">
 	<table class="table table-sm table-hover">
 	<thead> 
 		<tr>
-			<th>No</th> 
-			<th>내용</th> 
-			<th>작성일</th> 
+			<th width="10%">No</th> 
+			<th width="30%">작성내용</th> 
+			<th width="40%">작성일</th> 
+			<th width="20%">추천수</th> 
 		</tr>
 	</thead>
 	<tbody>
@@ -103,8 +104,9 @@ function withdraw() {
 		<c:forEach var="t" items="${members_answer}" varStatus="cnt" >
 		<tr>
 			<td>${cnt.count} </td>
-			<td><a href="oneBoard.do?board_pk=${t.answer_pk}&cPage=1"> ${t.answer_content} </a></td>
+			<td><a href="oneBoard.do?board_pk=${t.answer_bd_pk}&cPage=1"> ${t.answer_content} </a></td>
 			<td>${t.answer_date} </td>
+			<td>${t.answer_recommendation} </td>
 		</tr>
 		</c:forEach>
 		</c:if>

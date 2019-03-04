@@ -69,10 +69,15 @@
          
        	<div class="col-lg-6"> 
             <div class="p-5">
-            <img class="img-fluid rounded" 
+            <!-- <img class="img-fluid rounded" 
             src="resources/images/JeongTaeYoung.jpg" alt="Jeong_img" 
-            style="margin-left: 25%">
+            style="margin-left: 25%"> -->
+            <div class="img-fluid">
+            <a href="https://github.com/teang90/MariaDBs_Board_in_Spring">
+            <img alt="github" src="resources/external_image/PLanguage_img/github.png"></a>
             </div>
+            </div>
+			<div style="margin-left: 100px">GitHub으로 이동</div>
         </div>
         
         <div class="col-lg-6">

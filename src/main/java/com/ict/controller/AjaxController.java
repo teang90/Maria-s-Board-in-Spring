@@ -38,7 +38,6 @@ import com.ict.service.FunctionCollection;
 import com.ict.service.Page;
 import com.ict.mybatis.Member;
 
-//@RequestMapping("/ajax") 
 @RestController
 public class AjaxController {
 	@Autowired
