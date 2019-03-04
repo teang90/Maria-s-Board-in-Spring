@@ -200,6 +200,7 @@ public class DAO {
 		return template.delete("delete_answer", answer_pk);
 	}
 
+	// 검색기능 사용 후 페이징처리
 	public List<Board> getSearchList(Page pg, String keyword, String legend) {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("begin", String.valueOf(pg.getBegin()));
@@ -208,7 +209,19 @@ public class DAO {
 		map.put("legend", legend);
 		return template.selectList("searchList", map);
 	}
+
+	// 마이페이지에 답글 수 나타내기 위한 자료 출력
+	public List<Answer> getMemberAnswer(String member_id) {
+		return template.selectList("returnAnswerOfOne", member_id);
+	}
 	
-	
+	// 마이페이지에 작성글 수 나타내기 위한 자료 출력
+	public List<Board> getMemberBoard(String member_id) {
+		return template.selectList("returnBoardOfOne", member_id);
+	}
+
+	public int getWithDraw(String member_id) {
+		return template.delete("withdrawMember", member_id);
+	}
 	
 }

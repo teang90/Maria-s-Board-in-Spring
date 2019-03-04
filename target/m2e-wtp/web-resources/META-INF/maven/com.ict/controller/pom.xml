@@ -185,6 +185,13 @@
 		    <artifactId>jackson-databind</artifactId>
 		    <version>2.9.7</version>
 		</dependency>
+
+		<!-- <dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-annotations</artifactId>
+		    <version>2.9.0</version>
+		</dependency> -->
+		
 		
 		<!-- JSON 사용을 위한 메이븐(이거 설정해줘야 JSONParser, JSONObject 등... 사용 가능)-->
 		<dependency>

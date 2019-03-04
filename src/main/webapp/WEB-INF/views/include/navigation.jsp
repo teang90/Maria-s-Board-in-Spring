@@ -78,6 +78,9 @@
 					</c:if>
 					<c:if test="${!empty member_id}">
 						<li class="nav-item">
+							<a class="nav-link" href="mypage.do?member_id=${member_id}">마이페이지</a>
+						</li>
+						<li class="nav-item">
 							<a class="nav-link logout" onclick="javascript:logout()" >로그아웃</a>
 						</li>
 					</c:if>
@@ -120,6 +123,7 @@
 			}
 		});
 	} 
+ 	
 	
 	</script>
 </body>

@@ -181,6 +181,22 @@ public class Controller {
 		return mv;
 	}
 	
+	//마이페이지 이동
+	@RequestMapping("mypage.do")
+	public ModelAndView goMyPage(
+			@RequestParam("member_id") String member_id) {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("member_id", member_id);
+		
+		List<Answer> members_answer = dao.getMemberAnswer(member_id);
+		List<Board> members_board = dao.getMemberBoard(member_id);
+		
+		mv.addObject("members_answer", members_answer);
+		mv.addObject("members_board", members_board);
+		mv.setViewName("myPage");
+		return mv;
+	}
+	
 	//게시글 상세보기
 	@Transactional
 	@RequestMapping(value="oneBoard.do")
@@ -246,6 +262,17 @@ public class Controller {
 		}
 		dao.getDeleteBoard(board_pk);
 		return str; 
+	}
+	
+	// 회원탈퇴하기
+	@RequestMapping("withdraw.do")
+	public String withdrawMember(
+			@RequestParam("member_id") String member_id,
+			HttpSession session
+			) {
+		dao.getWithDraw(member_id);
+		session.invalidate();
+		return "redirect:/";
 	}
 	
 	//게시글에 답글 달기
