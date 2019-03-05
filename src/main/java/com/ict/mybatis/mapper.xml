@@ -212,11 +212,11 @@
 	</select>
 	
 	<select id="returnAnswerOfOne" parameterType="String" resultType="com.ict.mybatis.Answer">
-		select * from Answer where answer_id = #{member_id}
+		select * from answer where answer_id = #{member_id}
 	</select>
 	
 	<select id="returnBoardOfOne" parameterType="String" resultType="com.ict.mybatis.Board">
-		select * from Board where board_id = #{member_id}
+		select * from board where board_id = #{member_id}
 	</select>
 	
 	
